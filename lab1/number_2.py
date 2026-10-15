@@ -1,3 +1,6 @@
+import math
+import matplotlib as pl
+
 # ======= P1 - bounds and Horner's Scheme ======= #
 
 # Вычисляет значения полинома и его производных по схеме Горнера.
@@ -37,14 +40,57 @@ def lower_bnd(coeffs):
     return -L
   return None
 
-# --- На моем варианте 52 --- #
+# ======= P2 - Search roots with graphics ======= #
+
+# Смотрим отрезок [a,b] с шагом в h
+def find_intervals(f, a, b, h=0.1):
+  x = a
+  intervals = []
+  while x < b:
+    if f(x) * f(x + h) <=0:
+      intervals.append((x,x+h))
+    x += h
+  return intervals
+
+def itiration_method(phi, a, b, eps=0.001):
+  x_cur = (a+b)/2
+  iters = 0
+  while True:
+    x_next = phi(x_curr)
+    iters += 1
+    if abs(x_next - x_curr < eps):
+      return x_next, iters
+    x_cur = x_next
+
+# ===== Решение моего варианта 52 ===== #
+
+# === Уравнение 1 === #
 print("Uravneniye 1: 0.3x + 0.5x^3 -1.2 = 0")
 coeffs_poly = [0.5, 0.0, 0.3, -1.2]
 up = upper_bnd(coeffs_poly)
 dwn = lower_bnd(coeffs_poly)
+print(f"Bounds of roots: [{dwn} - {up}]")
 
-print(f"Coeffs: {coeffs_poly}")
-print(f"Upper bound: {up}")
-print(f"Lower bound: {dwn}")
-print(f"Search interval: {dwn} - {up}")
+# Функции полинома
+f1 = lambda x: 0.5 * x**3 + 0.3 * x - 1.2
+phi = lambda x: (2.4 - 0.6 * x) ** (1/3)
 
+# Отрезок с корнями
+intervals = find_intervals(f1, dwn, up, 0.1)
+print("Interval with bounds: {intervals}")
+
+# === Тригонометрия второе уравнение == #
+print("2x + cos(x) = 0.5")
+# Это не полином это трига тут Горнера нельзя
+# Если проверить подстановкой то понятно что корень между -1 ~ 0
+
+f2 = lambda x: 2 * x + math.cos(x) - 0.5
+phi2 = lambda x: (0.5 - math.cos(x))/2
+
+intervals2 = find_intervals(f2, -1.0, 1.0, 0.1)
+print("Interval with bounds: {intervals2}") 
+
+if intervals2:
+  a2, b2 = intervals2[0]
+  root2, iters2 = itiration_method(phi2, -1.0, 1.0)
+  print(f"Roots: x = {root2:.6f} (iterations = {iters2})")
