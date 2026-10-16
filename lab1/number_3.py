@@ -49,10 +49,23 @@ def chord_method(f, a, b, eps=0.001):
   while True:
     x = b - f(b) * (b - a) / (f(b) - f(a))
     iters+=1
-    if abs(x_next - x_curr) < eps:
-      return x_next, iters
+    if abs(x - a) < eps:
+      return x, iters
     a = x
 
+# --- б) Метод Касаельных --- #
+
+def start_point(f, d2f, a, b):
+  # Выбираем точку из отрезка [a,b] для которой выполняется условие "f(x0) * f''(x0) > 0"
+  if f(a) * d2f(a) > 0:
+    return a
+  elif f(b) * d2f(b) > 0:
+    return b
+  else:
+    return (a + b)/2
+
+def tangent_method(f, a, b, eps=0.001):
+  return 0
 
 # === Сам третий номер === #
 
@@ -62,6 +75,7 @@ f_a = lambda x: 2 * x - math.log(x) - 7
 # ОО x > 0 -> от 0.1 до 10
 intervals_a = find_intervals(f_a, 0.1, 10, 0.1)
 print(f"Bounds with roots: {intervals_a}")
+
 a_a, b_a = 4.2, 4.3
 root_chord, iters_chord = chord_method(f_a, a_a, b_a)
 print(f"Root (chord method): {root_chord}. \nIterations count: {iters_chord}")
