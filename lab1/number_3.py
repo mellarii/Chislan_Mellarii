@@ -64,8 +64,16 @@ def start_point(f, d2f, a, b):
   else:
     return (a + b)/2
 
-def tangent_method(f, a, b, eps=0.001):
-  return 0
+def tangent_method(f, df, x0, eps=0.001):
+  iters = 0
+  x_curr = x0
+  while True:
+    x_next = x_curr - f(x_curr) / df(x_curr)
+    iters+=1
+    
+    if abs(x_next - x_curr) < eps:
+      return x_curr, iters
+    x_curr = x_next
 
 # === Сам третий номер === #
 
@@ -89,6 +97,17 @@ print(f"Bounds from Horner: [{dwn_b} : {up_b}]")
 f_b = lambda x: x**3 - 3 * x**2 + 6 * x - 5
 intervals_b = find_intervals(f_b, dwn_b, up_b, 0.1)
 print(f"Bounds with roots: {intervals_b}")
+
+# Производные
+df_b = lambda x: 3 * x**2 - 6 * x + 6
+d2f_b = lambda x: 6 * x - 6
+
+a_b, b_b = intervals_b[0]
+x0_b = start_point(df_b, d2f_b, a_b, b_b)
+print(f"Choosen start point for p. b): {x0_b}")
+
+root_tangent, iters_tangent = tangent_method(f_b, df_b, x0_b)
+print(f"Root (tangent method): {root_tangent}. \nIterations count: {iters_tangent}")
 
 # --- Уравнение в) 2x^3+9x^2-6=0 --- #
 print("\nc) 2x^3 + 9x^2 - 6 = 0")
