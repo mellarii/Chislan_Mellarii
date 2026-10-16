@@ -1,5 +1,5 @@
 import math
-import matplotlib as pl
+import matplotlib.pyplot as pl
 
 # ======= P1 - bounds and Horner's Scheme ======= #
 
@@ -53,14 +53,14 @@ def find_intervals(f, a, b, h=0.1):
   return intervals
 
 def itiration_method(phi, a, b, eps=0.001):
-  x_cur = (a+b)/2
+  x_curr = (a+b)/2
   iters = 0
   while True:
     x_next = phi(x_curr)
     iters += 1
     if abs(x_next - x_curr < eps):
       return x_next, iters
-    x_cur = x_next
+    x_curr = x_next
 
 # ===== Решение моего варианта 52 ===== #
 
@@ -77,9 +77,13 @@ phi = lambda x: (2.4 - 0.6 * x) ** (1/3)
 
 # Отрезок с корнями
 intervals = find_intervals(f1, dwn, up, 0.1)
+if intervals:
+  root1, iter1 = itiration_method(phi, up, dwn)
 print("Interval with bounds: {intervals}")
 
+
 # === Тригонометрия второе уравнение == #
+
 print("2x + cos(x) = 0.5")
 # Это не полином это трига тут Горнера нельзя
 # Если проверить подстановкой то понятно что корень между -1 ~ 0
@@ -94,3 +98,26 @@ if intervals2:
   a2, b2 = intervals2[0]
   root2, iters2 = itiration_method(phi2, -1.0, 1.0)
   print(f"Roots: x = {root2:.6f} (iterations = {iters2})")
+
+# ==========================================
+# Визуализация (Графическое отделение) <- Thank depseek
+# ==========================================
+def plot_graph(f, a, b, root, title):
+    xs = [a + (b - a) * i / 200 for i in range(201)]
+    ys = [f(x) for x in xs]
+    
+    pl.figure(figsize=(8, 5))
+    pl.plot(xs, ys, label="f(x)", color="blue", linewidth=2)
+    pl.axhline(0, color="black", linewidth=0.8)
+    pl.axvline(root, color="red", linestyle="--", label=f"Корень ≈ {root:.4f}")
+    pl.plot(root, 0, 'ro') # Красная точка на оси X
+    pl.title(title)
+    pl.xlabel("x")
+    pl.ylabel("f(x)")
+    pl.grid(True, linestyle="--", alpha=0.6)
+    pl.legend()
+    pl.show()
+
+# Строим графики для обоих уравнений
+plot_graph(f1, dwn, up, root1, "Уравнение 1: 0.5x³ + 0.3x - 1.2 = 0")
+plot_graph(f2, -1.0, 1.0, root2, "Уравнение 2: 2x + cos(x) - 0.5 = 0")
