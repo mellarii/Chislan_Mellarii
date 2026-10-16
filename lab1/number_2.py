@@ -34,7 +34,7 @@ def upper_bnd(coeffs):
 def lower_bnd(coeffs):
   c_neg = [coeffs[i] *((-1) ** (len(coeffs) - 1 - i)) for i in range(len(coeffs))]
 
-  # Nfr ;t rfr d dth[ytq yj *-1]
+  # Теперь ищем нижнюю границу для P(-x)
   L = upper_bnd(c_neg)
   if L is not None:
     return -L
@@ -58,7 +58,7 @@ def itiration_method(phi, a, b, eps=0.001):
   while True:
     x_next = phi(x_curr)
     iters += 1
-    if abs(x_next - x_curr < eps):
+    if abs(x_next - x_curr) < eps:
       return x_next, iters
     x_curr = x_next
 
@@ -79,7 +79,7 @@ phi = lambda x: (2.4 - 0.6 * x) ** (1/3)
 intervals = find_intervals(f1, dwn, up, 0.1)
 if intervals:
   root1, iter1 = itiration_method(phi, up, dwn)
-print("Interval with bounds: {intervals}")
+print(f"Interval with bounds: {intervals}")
 
 
 # === Тригонометрия второе уравнение == #
@@ -92,11 +92,11 @@ f2 = lambda x: 2 * x + math.cos(x) - 0.5
 phi2 = lambda x: (0.5 - math.cos(x))/2
 
 intervals2 = find_intervals(f2, -1.0, 1.0, 0.1)
-print("Interval with bounds: {intervals2}") 
+print(f"Interval with bounds: {intervals2}") 
 
 if intervals2:
   a2, b2 = intervals2[0]
-  root2, iters2 = itiration_method(phi2, -1.0, 1.0)
+  root2, iters2 = itiration_method(phi2, a2, b2)
   print(f"Roots: x = {root2:.6f} (iterations = {iters2})")
 
 # ==========================================
