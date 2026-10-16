@@ -75,6 +75,23 @@ def tangent_method(f, df, x0, eps=0.001):
       return x_curr, iters
     x_curr = x_next
 
+# --- в) Комбинированный метод --- #
+
+def combined_method(f, df, d2f, a, b, eps=0.001):
+  iters = 0
+  while True:
+    if f(a) * d2f(a) > 0:
+      x_tan = a - f(a) / df(a)
+      x_chord = b - f(b) * (b - a) / (f(b) - f(a))
+      a, b = x_chord, x_tan
+    else: 
+      x_tan = b - f(b) / df(b)
+      x_chord = a - f(a) * (b - a) / (f(b) - f(a))
+      a, b = x_chord, x_tan 
+    iters+=1
+    if abs(b - a) < eps:
+      return (a + b)/2, iters
+
 # === Сам третий номер === #
 
 # --- Уравнение а) 2x-lg(x)-7=0 --- #
@@ -103,7 +120,7 @@ df_b = lambda x: 3 * x**2 - 6 * x + 6
 d2f_b = lambda x: 6 * x - 6
 
 a_b, b_b = intervals_b[0]
-x0_b = start_point(df_b, d2f_b, a_b, b_b)
+x0_b = start_point(f_b, d2f_b, a_b, b_b)
 print(f"Choosen start point for p. b): {x0_b}")
 
 root_tangent, iters_tangent = tangent_method(f_b, df_b, x0_b)
@@ -118,3 +135,14 @@ print(f"Bounds from Horner: [{dwn_c} : {up_c}]")
 f_c = lambda x: 2 * x**3 + 9 * x**2 - 6
 intervals_c = find_intervals(f_c, dwn_c, up_c, 0.1)
 print(f"Bounds with roots: {intervals_c}\n")
+
+# Производные
+df_c = lambda x: 6 * x**2 + 18 * x
+d2f_c = lambda x: 12 * x + 18
+
+a_c, b_c = intervals_c[0]
+x0_c = start_point(f_c, d2f_c, a_c, b_c)
+print(f"Choosen start point for p. c): {x0_c}")
+
+root_combined, iters_combined = combined_method(f_c, df_c, d2f_c, a_c, b_c)
+print(f"Root (combined method): {root_combined}. \nIterations count: {iters_combined}")
