@@ -100,7 +100,7 @@ if intervals2:
   print(f"Roots: x = {root2:.6f} (iterations = {iters2})")
 
 # ==========================================
-# Визуализация (Графическое отделение) <- Thank depseek
+# Визуализация (Графическое отделение)
 # ==========================================
 def plot_graph(f, a, b, root, title):
     xs = [a + (b - a) * i / 200 for i in range(201)]

@@ -154,7 +154,7 @@ root_combined, iters_combined, history_combined = combined_method(f_c, df_c, d2f
 print(f"Root (combined method): {root_combined}. \nIterations count: {iters_combined}")
 
 # ==========================================
-# Визуализация (Графическое отделение) <- Thank depseek
+# Визуализация (Графическое отделение)
 # ==========================================
 
 def plot_chord(f, a, b, root, history, title):
