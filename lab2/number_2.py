@@ -14,7 +14,7 @@ def iterForm_transform(A, b):
 
   return C, d
 
-def iter_solve(A, b, eps=1e-4):
+def iter_solve(A, b, eps=1e-4, max_iters=1000):
   print("\n Solution by iter-n method: \n")
   n = len(b)
   C, d = iterForm_transform(A, b)
@@ -27,18 +27,21 @@ def iter_solve(A, b, eps=1e-4):
 
   iters_cnt += 1
 
-  for i in range(n):
-    sum_cx = sum(C[i][j] * x_old[j] for j in range(n))
-    x_new[i ] = d[i] +sum_cx
+  for k in range(max_iters):
+    for i in range(n):
+      sum_cx = sum(C[i][j] * x_old[j] for j in range(n))
+      x_new[i ] = d[i] +sum_cx
 
-  max_diff = max(abs(x_new[i] - x_old[i]) for j in range(n))
-  err_history.append(max_diff)
+    max_diff = max(abs(x_new[i] - x_old[i]) for j in range(n))
+    err_history.append(max_diff)
 
-  if max_diff < eps:
-    print(f"Reached {eps} for {iters_cnt} iterations")
-    return x_new, iters_cnt, err_history
+    if max_diff < eps:
+      print(f"Reached {eps} for {iters_cnt} iterations")
+      return x_new, iters_cnt, err_history
 
-  x_old = x_new.copy()
+    x_old = x_new.copy()
+
+  print(f"Reached max for {max_iters} iterations")
   return x_new, iters_cnt, err_history
 
 if __name__ == "__main__":
