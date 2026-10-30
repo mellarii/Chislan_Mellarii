@@ -40,7 +40,7 @@ def backwrd_sub(U, y):
     x[i] = (y[i] - sum_x) / U[i][i] 
   return x
 
-def halecky_cnt(A, b):
+def halecky_solve(A, b):
   print(" Solution by Halecky method \n")
   L, U = halecky_decomp(A)
 
