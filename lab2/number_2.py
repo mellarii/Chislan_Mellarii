@@ -25,14 +25,14 @@ def iter_solve(A, b, eps=1e-4, max_iters=1000):
   iters_cnt = 0
   err_history = []
 
-  iters_cnt += 1
-
   for k in range(max_iters):
+    iters_cnt += 1
+
     for i in range(n):
       sum_cx = sum(C[i][j] * x_old[j] for j in range(n))
       x_new[i ] = d[i] +sum_cx
 
-    max_diff = max(abs(x_new[i] - x_old[i]) for j in range(n))
+    max_diff = max(abs(x_new[i] - x_old[i]) for i in range(n))
     err_history.append(max_diff)
 
     if max_diff < eps:
