@@ -244,7 +244,6 @@ def plot_combined(f, a, b, root, history, title):
     pl.grid(True, alpha=0.3); pl.legend()
     pl.show()
 
-
 # --- сам Вывод функций грффически --- #
 plot_chord(f_a, a_a, b_a, root_chord, history_chord, "Chord method: ")
 plot_tangent(f_b, df_b, a_b, b_b, root_tangent, history_tangent, "Tangent method: ")
