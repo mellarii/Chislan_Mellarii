@@ -21,7 +21,7 @@ def modify_newton():
   X0 = np.array([0.0,0.5])
 
   det_J = np.linalg.det(J(X0))
-  print("Opredelitel Yakobi matrix: {det_J:.4f}")
+  print(f"Opredelitel Yakobi matrix: {det_J:.4f}")
   if abs(det_J) < 1e-10:
     print("Error - Yakobi matrix &&&&&&& ???? Virozdena******ispravit' ya ne pomnu kak na angliyskom")
     return 1
@@ -36,9 +36,9 @@ def modify_newton():
     delta = -np.dot(J_inv, F_val)
     X_new = X + delta
   
-  if np.max(np.abs(X_new - X)) < tol:
-    print("-" * 60)
-    print(f"x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
+    if np.max(np.abs(X_new - X)) < tol:
+      print("-" * 60)
+      print(f"Result: x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
 
   X = X_new
 
@@ -91,7 +91,7 @@ def gradient_method():
 
     if np.max(np.abs(X_new - X)) < tol:
       print("-" * 65)
-      print(f"x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
+      print(f"Result: x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
       break
             
     X = X_new
