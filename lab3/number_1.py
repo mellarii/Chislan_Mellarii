@@ -42,5 +42,60 @@ def modify_newton():
 
   X = X_new
 
+def gradient_method():
+  print("\n--- Gradient method ---")
+    
+  def F1(x, y):
+    return math.tan(x * y) - x**2
+
+  def F2(x, y):
+    return 7 * x**2 + 2 * y**2 - 1
+
+  def S(x, y):
+    return F1(x, y)**2 + F2(x, y)**2
+
+  def grad_S(x, y):
+    f1 = F1(x, y)
+    f2 = F2(x, y)
+    cos_sq = math.cos(x * y)**2
+      
+    df1_dx = y / cos_sq - 2 * x
+    df1_dy = x / cos_sq
+    df2_dx = 14 * x
+    df2_dy = 4 * y
+      
+    ds_dx = 2 * f1 * df1_dx + 2 * f2 * df2_dx
+    ds_dy = 2 * f1 * df1_dy + 2 * f2 * df2_dy
+
+    return np.array([ds_dx, ds_dy])
+
+  X = np.array([0.2, 0.6]) 
+  tol = 0.001
+  alpha = 0.05
+  max_iter = 1000
+
+  print(f"{'Iyeration':<8} | {'x':<10} | {'y':<10} | {'S(x,y)':<12} | {'Step':<12}")
+  print("-" * 65)
+
+  for i in range(max_iter):
+    grad = grad_S(X[0], X[1])
+        
+    temp_alpha = alpha
+    X_new = X - temp_alpha * grad
+      
+    while S(X_new[0], X_new[1]) > S(X[0], X[1]) and temp_alpha > 1e-6:
+      temp_alpha /= 2
+      X_new = X - temp_alpha * grad
+
+    print(f"{i+1:<8} | {X_new[0]:.6f}   | {X_new[1]:.6f}   | {S(X_new[0], X_new[1]):.6f}   | {temp_alpha:.5f}")
+
+    if np.max(np.abs(X_new - X)) < tol:
+      print("-" * 65)
+      print(f"x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
+      break
+            
+    X = X_new
+
+
 if __name__ == "__main__":
   modify_newton()
