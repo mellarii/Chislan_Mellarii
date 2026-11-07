@@ -31,6 +31,9 @@ def modify_newton():
   tol = 0.001
   max_iters = 50
 
+  print(f"{'Iter':<5} | {'x':<10} | {'y':<10}")
+  print("-" * 35)
+
   for i in range(max_iters):
     F_val = F(X)
     delta = -np.dot(J_inv, F_val)
