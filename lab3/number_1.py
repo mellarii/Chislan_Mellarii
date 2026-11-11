@@ -4,14 +4,14 @@ import math
 def modify_newton():
   print("Modify Newton method\n")
 
-  def F(X):
+  def F(X): # Заданная система нелинейных уравнений 
     x, y = X[0], X[1]
     return np.array([
       math.sin(y + 1) - x - 1.2,
       2*y + math.cos(x) - 2
     ])
 
-  def J(X):
+  def J(X): # Матрица якоби; В модНьютоне вычисляется только 1 раз 
     x, y = X[0], X[1]
     return np.array([
       [-1.0, math.cos(y + 1)],
@@ -20,13 +20,13 @@ def modify_newton():
 
   X0 = np.array([0.0,0.5])
 
-  det_J = np.linalg.det(J(X0))
+  det_J = np.linalg.det(J(X0)) # Условие существования решения матрицы якоби !!! переделать счет дет вручную
   print(f"Opredelitel Yakobi matrix: {det_J:.4f}")
   if abs(det_J) < 1e-10:
     print("Error - Yakobi matrix &&&&&&& ???? Virozdena******ispravit' ya ne pomnu kak na angliyskom")
-    return 1
+    return
 
-  J_inv = np.linalg.inv(J(X0))
+  J_inv = np.linalg.inv(J(X0)) # Обратная матрица якоби !!! тоже без нумпи
   X = X0.copy()
   tol = 0.001
   max_iters = 50
@@ -35,15 +35,17 @@ def modify_newton():
   print("-" * 35)
 
   for i in range(max_iters):
-    F_val = F(X)
-    delta = -np.dot(J_inv, F_val)
-    X_new = X + delta
+    F_val = F(X) # Значение функции в шаге
+    delta = -np.dot(J_inv, F_val) # Матричное умножение значение функции на обратную матрицу якоби
+    X_new = X + delta # Итерационная формула
   
     if np.max(np.abs(X_new - X)) < tol:
       print("-" * 60)
       print(f"Result: x = {X_new[0]:.4f}, y = {X_new[1]:.4f}")
 
   X = X_new
+
+# !! без нумпи
 
 def gradient_method():
   print("\n--- Gradient method ---")
@@ -54,10 +56,10 @@ def gradient_method():
   def F2(x, y):
     return 7 * x**2 + 2 * y**2 - 1
 
-  def S(x, y):
+  def S(x, y): # Целевая функция
     return F1(x, y)**2 + F2(x, y)**2
 
-  def grad_S(x, y):
+  def grad_S(x, y): # Вектор - градиет целевой функции для поиска минимума
     f1 = F1(x, y)
     f2 = F2(x, y)
     cos_sq = math.cos(x * y)**2
@@ -84,9 +86,9 @@ def gradient_method():
     grad = grad_S(X[0], X[1])
         
     temp_alpha = alpha
-    X_new = X - temp_alpha * grad
+    X_new = X - temp_alpha * grad # Итерационная функция градиентного спуска
       
-    while S(X_new[0], X_new[1]) > S(X[0], X[1]) and temp_alpha > 1e-6:
+    while S(X_new[0], X_new[1]) > S(X[0], X[1]) and temp_alpha > 1e-6: # Подбираем шаг спуска пока функцяи не начнет убывать
       temp_alpha /= 2
       X_new = X - temp_alpha * grad
 
@@ -102,3 +104,7 @@ def gradient_method():
 
 if __name__ == "__main__":
   modify_newton()
+  gradient_method()
+
+# Словесная интерпритация методов как ребеночку маленькому объяснить
+# ВЫбор начального приближения 
